@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import Slider from "rc-slider";
 import Tooltip from "rc-tooltip";
 import "rc-slider/assets/index.css";
@@ -20,21 +22,25 @@ const handle = props => {
 };
 
 const SliderWithTooltip = ({ min, max, handleChange, value }) => {
-  const handleValueChange = e => {
-    value: e;
-  };
-
   return (
     <div>
       <Slider
-        min={0}
-        max={50}
+        min={min}
+        max={max}
         value={value}
         handle={handle}
         onChange={handleChange}
+        marks
       />
     </div>
   );
 };
+
+SliderWithTooltip.propTypes = {
+  min: PropTypes.number.isRequired,
+  max: PropTypes.number.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  value: PropTypes.number
+}
 
 export default SliderWithTooltip;

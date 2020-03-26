@@ -10,7 +10,7 @@ const Image = ({ src }) => {
   return (
     <img
       style={styles.galleryImage}
-      alt="stock gallery image"
+      alt="stock gallery photo"
       src={src}
       height={getHeight(src)}
       width={getWidth(src)}
@@ -20,7 +20,7 @@ const Image = ({ src }) => {
 
 const ImagesDisplay = ({ images }) => {
   if (!images || !images.length) {
-    return <div>Press Button Below to Load Images</div>;
+    return <div></div>;
   } else {
     return (
       <div style={styles.galleryGrid}>
@@ -36,15 +36,24 @@ const styles = {
   galleryGrid: {
     display: "flex",
     flexWrap: "wrap",
-    alignItems: "center",
-    flexDirection: "row"
+    width: "80%",
+    margin: "auto",
+    justifyContent: "space-around"
   },
   galleryImage: {
     maxHeight: "100vh",
     padding: "1rem",
     margin: "1rem",
-    border: "1rem black solid"
+    border: "1rem darkgray solid"
   }
 };
+
+Image.propTypes = {
+  src: PropTypes.string.isRequired,
+}
+
+ImagesDisplay.propTypes = {
+    images: PropTypes.arrayOf(PropTypes.string).isRequired,
+}
 
 export default ImagesDisplay;

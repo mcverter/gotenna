@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import SliderWithTooltip from "./SliderWithTooltip";
 import Select from "react-select";
 
@@ -36,6 +38,7 @@ const GalleryControls = ({
   <div style={styles.galleryControls}>
     <div style={styles.controlPad}>
       <div style={styles.controlPadTitle}>Picture Controls</div>
+
       <div style={styles.dimensions}>
         <div style={styles.controlPadSubtitle}>Image Size </div>
         <Select
@@ -48,11 +51,15 @@ const GalleryControls = ({
           classNamePrefix="select"
         />
       </div>
+
       <div style={styles.grayScale}>
-        <div style={styles.controlPadSubtitle}>Grayscale Only:</div>
-        <input type="checkbox" checked={currentGrayscale} onChange={setGrayscale} />
+        <label htmlFor="gsBox">
+            <span style={styles.controlPadSubtitle}>Grayscale Only:&nbsp;&nbsp;</span>
+            <input type="checkbox" checked={currentGrayscale} onChange={setGrayscale} id="gsBox"/>
+        </label>
       </div>
     </div>
+
     <div style={styles.controlPad}>
       <div style={styles.controlPadTitle}> Page Controls </div>
       <div style={styles.pageSize}>
@@ -60,19 +67,20 @@ const GalleryControls = ({
           Images Per Page (Currently: {currentPageSize})
         </div>
         <SliderWithTooltip
-          min={0}
-          max={50}
+          min={1}
+          max={maxPage*currentPageSize}
           value={currentPageSize}
           handleChange={setPageSize}
         />
       </div>
+
       <div style={styles.pageNavigation}>
         <div style={styles.controlPadSubtitle}>
           Go To Page (Currently: {currentPageNumber} of {maxPage})
         </div>
         <SliderWithTooltip
-          min={0}
-          max={50}
+          min={1}
+          max={maxPage}
           value={currentPageNumber}
           handleChange={setPageNumber}
         />
@@ -85,13 +93,14 @@ const styles = {
   galleryControls: {
     display: "flex",
     flexDirection: "row",
-    border: "1px black solid",
+    border: "1px #e0e0e0 solid",
     justifyContent: "space-around",
-    alignItems: "center"
+    width: "80%",
+    margin: "auto"
   },
   controlPad: {
     flexGrow: 1,
-    border: "1px green solid",
+    border: "2px #d8d8d8 solid",
     width: "50%",
     padding: "2rem"
   },
@@ -101,8 +110,7 @@ const styles = {
     fontSize: "150%"
   },
   controlPadSubtitle: {
-    marginLeft: "10px",
-    marginBottom: "5px",
+    margin: "20px 0px 8px 5px",
     fontSize: "125%",
     fontWeight: "bolder"
   },
@@ -110,7 +118,24 @@ const styles = {
   pageSize: {},
   pageNavigation: {},
   grayScale: {
-    display: "flex"
+    display: "flex",
+    marginTop: "20px"
   }
 };
+
+
+GalleryControls.propTypes = {
+    currentImageDimensions: PropTypes.array,
+    setImageDimensions: PropTypes.func.isRequired,
+    currentPageSize: PropTypes.number.isRequired,
+    setPageSize: PropTypes.func.isRequired,
+    currentPageNumber: PropTypes.number.isRequired,
+    setPageNumber: PropTypes.func.isRequired,
+    currentGrayscale: PropTypes.bool,
+    setGrayscale: PropTypes.func.isRequired,
+    maxPage: PropTypes.number.isRequired,
+
+}
+
 export default GalleryControls;
+

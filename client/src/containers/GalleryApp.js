@@ -1,9 +1,11 @@
 import React, {Component} from "react";
+import PropTypes from "prop-types";
+
 import axios from "axios";
 import ImagesDisplay from "../components/ImagesDisplay";
 import GalleryControls from "../components/GalleryControls";
 
-const BASE_URL = "http://localhost:3001/photos";
+const BASE_URL = "http://localhost:8080/photos";
 
 class GalleryApp extends Component {
   constructor(props) {
@@ -22,7 +24,7 @@ class GalleryApp extends Component {
 
   async loadImages() {
     const { grayscale, dimensions, pageSize, pageNumber } = this.state;
-    console.log('grayscale, dimensions, pageSize, pageNumber', grayscale, dimensions, pageSize, pageNumber)
+
     let result = await axios.get(BASE_URL, {
       params: {
         grayscale,
@@ -33,7 +35,6 @@ class GalleryApp extends Component {
       }
     });
 
-    console.log('result data', result.data)
     this.setState({
       images: result.data.images,
       qtyImages: result.data.totalImages
@@ -56,17 +57,19 @@ class GalleryApp extends Component {
 
   setImageDimensions = dims => {
     this.setState({
-      currentPageNumber: 1,
-      dimensions: dims
+      pageNumber: 1,
+      dimensions: dims || []
     });
   };
 
   setPageSize = size => {
-    this.setState({ pageSize: size });
+    this.setState({
+        pageNumber: 1,
+        pageSize: size
+    });
   };
 
   setPageNumber = num => {
-    debugger;
     this.setState({ pageNumber: num });
   };
 
@@ -94,7 +97,6 @@ class GalleryApp extends Component {
     return (
       <div style={styles.galleryApp}>
         <Controls />
-        <button onClick={this.loadImages}>reload</button>
         <ImagesDisplay images={images} />
         <Controls />
       </div>
@@ -104,9 +106,12 @@ class GalleryApp extends Component {
 
 const styles = {
   galleryApp: {
-    border: "1px solid red"
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center"
   }
 };
+
 GalleryApp.propTypes = {};
 
 export default GalleryApp;
